@@ -1,0 +1,9 @@
+{
+  "name": "listbookmarks",
+  "version": "1.0.0",
+  "private": true,
+    "type": "module",
+  "dependencies": {
+    "aws-sdk": "~3"
+  }
+}

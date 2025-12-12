@@ -1,0 +1,339 @@
+SAM CLI, version 1.150.1
+jq: parse error: Invalid numeric literal at line 1, column 6
+AWS_REGION is set to: us-east-1
+
+labstack-fc363a26-cf11-4fa0-a34a-e14-samserverless-swynnla4hyjz
+sam-bookmark-app
+
+added 40 packages, and audited 41 packages in 3s
+
+found 0 vulnerabilities
+npm notice
+npm notice New minor version of npm available! 11.6.2 -> 11.7.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.7.0
+npm notice To update run: npm install -g npm@11.7.0
+npm notice
+
+	SAM CLI now collects telemetry to better understand customer needs.
+
+	You can OPT OUT and disable telemetry collection by setting the
+	environment variable SAM_CLI_TELEMETRY=0 in your shell.
+	Thanks for your help!
+
+	Learn More: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-telemetry.html
+
+	Uploading to sam-app/7aa0b8999433b6c20721c596506a5111  878 / 878  (100.00%)
+	Uploading to sam-app/ed569ba0bbfb98cf2fe45fd41c7e5511  960 / 960  (100.00%)
+	Uploading to sam-app/97c168542ad60215636363b7b8c08826  1048576 / 1325232  (79.12%)	Uploading to sam-app/97c168542ad60215636363b7b8c08826  1325232 / 1325232  (100.00%)
+	Uploading to sam-app/4cd4a8f0e6b37e4a6b1cbb11d0c35a36  883 / 883  (100.00%)
+	Uploading to sam-app/2cbc96b50afc860d5d2013c387d27cb8  985 / 985  (100.00%)
+	Uploading to sam-app/6b4d25c05e3730054cea3047f4c7991f  1023 / 1023  (100.00%)
+	Uploading to sam-app/397983f4c2dc6cffd352693c2f2e93f7  1151 / 1151  (100.00%)
+	Uploading to sam-app/daee3f2b9bfe146cfdb3b8e71f4d4f42  1270 / 1270  (100.00%)
+	Uploading to sam-app/bb6c38d3600323f6761c1d43dc66f341  1251 / 1251  (100.00%)
+	Uploading to sam-app/69e245fefdff49fc0d5840de74f7dec3  824 / 824  (100.00%)
+	Uploading to sam-app/3c87b4031e503a55a31a643625886365  1131 / 1131  (100.00%)
+	Uploading to sam-app/21a26d344080e8767e919e47bbe712f0  1285 / 1285  (100.00%)
+
+	Deploying with following values
+	===============================
+	Stack name                   : sam-bookmark-app
+	Region                       : us-east-1
+	Confirm changeset            : False
+	Disable rollback             : False
+	Deployment s3 bucket         : labstack-fc363a26-cf11-4fa0-a34a-e14-samserverless-swynnla4hyjz
+	Capabilities                 : ["CAPABILITY_IAM"]
+	Parameter overrides          : {"StackName": "", "APIGatewayStageName": "dev", "LambdaDeploymentRole": "arn:aws:iam::509323177719:role/LambdaDeploymentRole", "StepFunctionsDeploymentRole": "arn:aws:iam::509323177719:role/EventBridgeStateMachineRole"}
+	Signing Profiles             : {}
+
+Initiating deployment
+=====================
+
+	Uploading to sam-app/9fd115d16cd7e15b180dc14299bccc17.template  23913 / 23913  (100.00%)
+
+
+Waiting for changeset to be created..
+
+CloudFormation stack changeset
+-------------------------------------------------------------------------------------------------
+Operation                LogicalResourceId        ResourceType             Replacement            
+-------------------------------------------------------------------------------------------------
++ Add                    CloudWatchLogGroup       AWS::Logs::LogGroup      N/A                    
++ Add                    DuplicateCheck           AWS::Lambda::Function    N/A                    
++ Add                    EventBridgeCatchAllRul   AWS::Events::Rule        N/A                    
+                         e                                                                        
++ Add                    EventBridgeContestRule   AWS::Events::Rule        N/A                    
++ Add                    EventBridgeNotifyRule    AWS::Events::Rule        N/A                    
++ Add                    EventBus                 AWS::Events::EventBus    N/A                    
++ Add                    EventSourceMapping       AWS::Lambda::EventSour   N/A                    
+                                                  ceMapping                                       
++ Add                    EventTopicPolicy         AWS::SNS::TopicPolicy    N/A                    
++ Add                    PermissionForEventsToI   AWS::Lambda::Permissio   N/A                    
+                         nvokeLambda              n                                               
++ Add                    PublishStateMachine      AWS::StepFunctions::St   N/A                    
+                                                  ateMachine                                      
++ Add                    SNSBookmarkTopic         AWS::SNS::Topic          N/A                    
++ Add                    SNSContestTopic          AWS::SNS::Topic          N/A                    
++ Add                    apiDeployment956f8e4e8   AWS::ApiGateway::Deplo   N/A                    
+                         9                        yment                                           
++ Add                    apiStage                 AWS::ApiGateway::Stage   N/A                    
++ Add                    api                      AWS::ApiGateway::RestA   N/A                    
+                                                  pi                                              
++ Add                    bookmarksTable           AWS::DynamoDB::Table     N/A                    
++ Add                    contest                  AWS::Lambda::Function    N/A                    
++ Add                    createBookmarkapiPOSTP   AWS::Lambda::Permissio   N/A                    
+                         ermissionStage           n                                               
++ Add                    createBookmark           AWS::Lambda::Function    N/A                    
++ Add                    deleteBookmarkapiDELET   AWS::Lambda::Permissio   N/A                    
+                         EPermissionStage         n                                               
++ Add                    deleteBookmark           AWS::Lambda::Function    N/A                    
++ Add                    getBookmarkapiGETPermi   AWS::Lambda::Permissio   N/A                    
+                         ssionStage               n                                               
++ Add                    getBookmark              AWS::Lambda::Function    N/A                    
++ Add                    listBookmarksapiGETAll   AWS::Lambda::Permissio   N/A                    
+                         PermissionStage          n                                               
++ Add                    listBookmarks            AWS::Lambda::Function    N/A                    
++ Add                    publishApproval          AWS::Lambda::Function    N/A                    
++ Add                    streamTrigger            AWS::Lambda::Function    N/A                    
++ Add                    updateBookmarkapiPUTPe   AWS::Lambda::Permissio   N/A                    
+                         rmissionStage            n                                               
++ Add                    updateBookmark           AWS::Lambda::Function    N/A                    
++ Add                    userApprovalEmail        AWS::Lambda::Function    N/A                    
++ Add                    userApprovalapiUserPer   AWS::Lambda::Permissio   N/A                    
+                         missionStage             n                                               
++ Add                    userApproval             AWS::Lambda::Function    N/A                    
++ Add                    validateURL              AWS::Lambda::Function    N/A                    
+-------------------------------------------------------------------------------------------------
+
+
+Changeset created successfully. arn:aws:cloudformation:us-east-1:509323177719:changeSet/samcli-deploy1765567931/9fa96c31-f9f9-4c15-8e47-a8e72c3fed9d
+
+
+2025-12-12 19:32:22 - Waiting for stack create/update to complete
+
+CloudFormation events from stack operations (refresh every 5.0 seconds)
+-------------------------------------------------------------------------------------------------
+ResourceStatus           ResourceType             LogicalResourceId        ResourceStatusReason   
+-------------------------------------------------------------------------------------------------
+CREATE_IN_PROGRESS       AWS::CloudFormation::S   sam-bookmark-app         User Initiated         
+                         tack                                                                     
+CREATE_IN_PROGRESS       AWS::Lambda::Function    streamTrigger            -                      
+CREATE_IN_PROGRESS       AWS::Events::EventBus    EventBus                 -                      
+CREATE_IN_PROGRESS       AWS::DynamoDB::Table     bookmarksTable           -                      
+CREATE_IN_PROGRESS       AWS::Logs::LogGroup      CloudWatchLogGroup       -                      
+CREATE_IN_PROGRESS       AWS::SNS::Topic          SNSBookmarkTopic         -                      
+CREATE_IN_PROGRESS       AWS::SNS::Topic          SNSContestTopic          -                      
+CREATE_IN_PROGRESS       AWS::Logs::LogGroup      CloudWatchLogGroup       Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Events::EventBus    EventBus                 Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::SNS::Topic          SNSContestTopic          Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::SNS::Topic          SNSBookmarkTopic         Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    streamTrigger            Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::DynamoDB::Table     bookmarksTable           Resource creation      
+                                                                           Initiated              
+CREATE_COMPLETE          AWS::SNS::Topic          SNSContestTopic          -                      
+CREATE_COMPLETE          AWS::SNS::Topic          SNSBookmarkTopic         -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    validateURL              -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    userApprovalEmail        -                      
+CREATE_IN_PROGRESS       AWS::SNS::TopicPolicy    EventTopicPolicy         -                      
+CREATE_COMPLETE          AWS::Events::EventBus    EventBus                 -                      
+CREATE_IN_PROGRESS       AWS::SNS::TopicPolicy    EventTopicPolicy         Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    userApprovalEmail        Resource creation      
+                                                                           Initiated              
+CREATE_COMPLETE          AWS::SNS::TopicPolicy    EventTopicPolicy         -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    validateURL              Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeNotifyRule    -                      
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeNotifyRule    Resource creation      
+                                                                           Initiated              
+CREATE_COMPLETE          AWS::Logs::LogGroup      CloudWatchLogGroup       -                      
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeCatchAllRul   -                      
+                                                  e                                               
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeCatchAllRul   Resource creation      
+                                                  e                        Initiated              
+CREATE_COMPLETE          AWS::Lambda::Function    streamTrigger            -                      
+CREATE_COMPLETE          AWS::Lambda::Function    validateURL              -                      
+CREATE_COMPLETE          AWS::Lambda::Function    userApprovalEmail        -                      
+CREATE_COMPLETE          AWS::DynamoDB::Table     bookmarksTable           -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    contest                  -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    createBookmark           -                      
+CREATE_IN_PROGRESS       AWS::Lambda::EventSour   EventSourceMapping       -                      
+                         ceMapping                                                                
+CREATE_IN_PROGRESS       AWS::Lambda::Function    listBookmarks            -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    publishApproval          -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    getBookmark              -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    updateBookmark           -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    userApproval             -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    deleteBookmark           -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    DuplicateCheck           -                      
+CREATE_IN_PROGRESS       AWS::Lambda::Function    contest                  Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    publishApproval          Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    createBookmark           Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    DuplicateCheck           Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    getBookmark              Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    updateBookmark           Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    deleteBookmark           Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    userApproval             Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Function    listBookmarks            Resource creation      
+                                                                           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::EventSour   EventSourceMapping       Resource creation      
+                         ceMapping                                         Initiated              
+CREATE_COMPLETE          AWS::Lambda::EventSour   EventSourceMapping       -                      
+                         ceMapping                                                                
+CREATE_COMPLETE          AWS::Lambda::Function    contest                  -                      
+CREATE_COMPLETE          AWS::Lambda::Function    publishApproval          -                      
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeContestRule   -                      
+CREATE_COMPLETE          AWS::Lambda::Function    DuplicateCheck           -                      
+CREATE_COMPLETE          AWS::Lambda::Function    listBookmarks            -                      
+CREATE_COMPLETE          AWS::Lambda::Function    getBookmark              -                      
+CREATE_COMPLETE          AWS::Lambda::Function    userApproval             -                      
+CREATE_COMPLETE          AWS::Lambda::Function    deleteBookmark           -                      
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeContestRule   Resource creation      
+                                                                           Initiated              
+CREATE_COMPLETE          AWS::Lambda::Function    createBookmark           -                      
+CREATE_COMPLETE          AWS::Lambda::Function    updateBookmark           -                      
+CREATE_IN_PROGRESS       AWS::ApiGateway::RestA   api                      -                      
+                         pi                                                                       
+CREATE_IN_PROGRESS       AWS::ApiGateway::RestA   api                      Resource creation      
+                         pi                                                Initiated              
+CREATE_COMPLETE          AWS::ApiGateway::RestA   api                      -                      
+                         pi                                                                       
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   listBookmarksapiGETAll   -                      
+                         n                        PermissionStage                                 
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   deleteBookmarkapiDELET   -                      
+                         n                        EPermissionStage                                
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   userApprovalapiUserPer   -                      
+                         n                        missionStage                                    
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   updateBookmarkapiPUTPe   -                      
+                         n                        rmissionStage                                   
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   getBookmarkapiGETPermi   -                      
+                         n                        ssionStage                                      
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   createBookmarkapiPOSTP   -                      
+                         n                        ermissionStage                                  
+CREATE_IN_PROGRESS       AWS::ApiGateway::Deplo   apiDeployment956f8e4e8   -                      
+                         yment                    9                                               
+CREATE_IN_PROGRESS       AWS::StepFunctions::St   PublishStateMachine      -                      
+                         ateMachine                                                               
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   deleteBookmarkapiDELET   Resource creation      
+                         n                        EPermissionStage         Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   userApprovalapiUserPer   Resource creation      
+                         n                        missionStage             Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   getBookmarkapiGETPermi   Resource creation      
+                         n                        ssionStage               Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   listBookmarksapiGETAll   Resource creation      
+                         n                        PermissionStage          Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   createBookmarkapiPOSTP   Resource creation      
+                         n                        ermissionStage           Initiated              
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   updateBookmarkapiPUTPe   Resource creation      
+                         n                        rmissionStage            Initiated              
+CREATE_IN_PROGRESS       AWS::StepFunctions::St   PublishStateMachine      Resource creation      
+                         ateMachine                                        Initiated              
+CREATE_IN_PROGRESS       AWS::ApiGateway::Deplo   apiDeployment956f8e4e8   Resource creation      
+                         yment                    9                        Initiated              
+CREATE_COMPLETE          AWS::Lambda::Permissio   userApprovalapiUserPer   -                      
+                         n                        missionStage                                    
+CREATE_COMPLETE          AWS::Lambda::Permissio   getBookmarkapiGETPermi   -                      
+                         n                        ssionStage                                      
+CREATE_COMPLETE          AWS::Lambda::Permissio   deleteBookmarkapiDELET   -                      
+                         n                        EPermissionStage                                
+CREATE_COMPLETE          AWS::Lambda::Permissio   createBookmarkapiPOSTP   -                      
+                         n                        ermissionStage                                  
+CREATE_COMPLETE          AWS::Lambda::Permissio   listBookmarksapiGETAll   -                      
+                         n                        PermissionStage                                 
+CREATE_COMPLETE          AWS::Lambda::Permissio   updateBookmarkapiPUTPe   -                      
+                         n                        rmissionStage                                   
+CREATE_COMPLETE          AWS::StepFunctions::St   PublishStateMachine      -                      
+                         ateMachine                                                               
+CREATE_COMPLETE          AWS::ApiGateway::Deplo   apiDeployment956f8e4e8   -                      
+                         yment                    9                                               
+CREATE_IN_PROGRESS       AWS::ApiGateway::Stage   apiStage                 -                      
+CREATE_IN_PROGRESS       AWS::ApiGateway::Stage   apiStage                 Resource creation      
+                                                                           Initiated              
+CREATE_COMPLETE          AWS::ApiGateway::Stage   apiStage                 -                      
+CREATE_IN_PROGRESS -     AWS::Events::Rule        EventBridgeNotifyRule    Eventual consistency   
+CONFIGURATION_COMPLETE                                                     check initiated        
+CREATE_IN_PROGRESS -     AWS::Events::Rule        EventBridgeCatchAllRul   Eventual consistency   
+CONFIGURATION_COMPLETE                            e                        check initiated        
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeNotifyRule    Encountered a          
+                                                                           permissions error      
+                                                                           performing a tagging   
+                                                                           operation, please add  
+                                                                           required tag           
+                                                                           permissions. Retrying  
+                                                                           request without        
+                                                                           including tags. See ht 
+                                                                           tps://repost.aws/knowl 
+                                                                           edge-                  
+                                                                           center/cloudformation- 
+                                                                           tagging-permission-    
+                                                                           error for how to       
+                                                                           resolve. Resource      
+                                                                           handler returned       
+                                                                           message: "Unauthorized 
+                                                                           tagging operation"     
+CREATE_COMPLETE          AWS::Events::Rule        EventBridgeNotifyRule    -                      
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeCatchAllRul   Encountered a          
+                                                  e                        permissions error      
+                                                                           performing a tagging   
+                                                                           operation, please add  
+                                                                           required tag           
+                                                                           permissions. Retrying  
+                                                                           request without        
+                                                                           including tags. See ht 
+                                                                           tps://repost.aws/knowl 
+                                                                           edge-                  
+                                                                           center/cloudformation- 
+                                                                           tagging-permission-    
+                                                                           error for how to       
+                                                                           resolve. Resource      
+                                                                           handler returned       
+                                                                           message: "Unauthorized 
+                                                                           tagging operation"     
+CREATE_COMPLETE          AWS::Events::Rule        EventBridgeCatchAllRul   -                      
+                                                  e                                               
+CREATE_IN_PROGRESS -     AWS::Events::Rule        EventBridgeContestRule   Eventual consistency   
+CONFIGURATION_COMPLETE                                                     check initiated        
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   PermissionForEventsToI   -                      
+                         n                        nvokeLambda                                     
+CREATE_IN_PROGRESS       AWS::Lambda::Permissio   PermissionForEventsToI   Resource creation      
+                         n                        nvokeLambda              Initiated              
+CREATE_COMPLETE          AWS::Lambda::Permissio   PermissionForEventsToI   -                      
+                         n                        nvokeLambda                                     
+CREATE_IN_PROGRESS       AWS::Events::Rule        EventBridgeContestRule   Encountered a          
+                                                                           permissions error      
+                                                                           performing a tagging   
+                                                                           operation, please add  
+                                                                           required tag           
+                                                                           permissions. Retrying  
+                                                                           request without        
+                                                                           including tags. See ht 
+                                                                           tps://repost.aws/knowl 
+                                                                           edge-                  
+                                                                           center/cloudformation- 
+                                                                           tagging-permission-    
+                                                                           error for how to       
+                                                                           resolve. Resource      
+                                                                           handler returned       
+                                                                           message: "Unauthorized 
+                                                                           tagging operation"     
+CREATE_COMPLETE          AWS::Events::Rule        EventBridgeContestRule   -                      
+CREATE_COMPLETE          AWS::CloudFormation::S   sam-bookmark-app         -                      
+                         tack                                                                     
+-------------------------------------------------------------------------------------------------
+
+
+Successfully created/updated stack - sam-bookmark-app in us-east-1
+

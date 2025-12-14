@@ -416,7 +416,321 @@ The Lambda function has been integrated into the new API endpoint. Now, the new 
 
 This step has successfully deployed the new endpoint to the **dev** stage.
 
-TO BE CONTINUE
+<img width="569" height="168" alt="image" src="https://github.com/user-attachments/assets/50e5a11d-a407-4776-aa2c-a7a01e6d7c5b" />
+
+The browser displays the following message from the Lambda function code:
+```
+"Plain text secret(s): Key Management Service Secrets"
+```
+The AWS KMS secret has been successfully decoded and is displaying the plain text. If you enter a value other than **kms**, you will see the following message:
+```
+"Plain text secret(s): Provide a valid secret type (kms, ssm or sm (secrets manager))"
+```
+
+### Task 3.2: Storing and accessing passwords using Systems Manager Parameter Store
+The Parameter Store is part of Systems Manager. It is used to store not only encrypted secrets but almost any data. IAM permissions can control who is able to access and change the data in a very fine-grained way. For each record in the Parameter Store, a history is stored, which makes it possible to know exactly when a change has occurred.
+
+<img width="604" height="35" alt="image" src="https://github.com/user-attachments/assets/a6e7bb6d-8a8d-4eaa-98be-a1531f3a34dd" />
+
+```bash
+aws ssm put-parameter --name /db/secret --value 'Hello, Parameter Store!' --type SecureString
+```
+You are storing a secret with the name **/db/secret** that has a value of **Hello, Parameter Store!** The following output is displayed:
+```json
+{
+    "Version": 1,
+    "Tier": "Standard"
+}
+```
+
+#### View the Parameter Store in the AWS Management Console
+
+<img width="674" height="81" alt="image" src="https://github.com/user-attachments/assets/c28a6ae4-6cd7-44b9-9d86-cecd62400f2a" />
+
+The **/db/secret** secret you created earlier is displayed here.
+
+<img width="436" height="63" alt="image" src="https://github.com/user-attachments/assets/511c61a4-0f3e-46af-9357-c28cfb56036d" />
+
+#### Test the secret using a Lambda function
+Update the **sam-bookmark-app-secrets-function** function code to test the new parameter.
+
+<img width="674" height="93" alt="image" src="https://github.com/user-attachments/assets/218a37e8-b5ea-456b-b486-6857e146319b" />
+
+* Add the following constant after the kmsSecret constant (line 7):
+```typescript
+const ssmSecret = process.env.SSM_SECRET;
+```
+* Add the following code to decode Systems Manager secure parameter at lines 23 to 24
+```typescript
+else if (secretType == 'ssm')
+    decodedSecret = await decodeSSMSecret();
+```
+* Add the following code snippet to the end of the existing code:
+```typescript
+async function decodeSSMSecret() {
+    const params = {
+        Name: ssmSecret,
+        WithDecryption: true
+    };
+    const result = await ssm.send(new GetParameterCommand(params));
+    return result.Parameter.Value
+}
+```
+The code should look like the following after you add the previous two snippets:
+```typescript
+
+import { KMSClient, DecryptCommand } from "@aws-sdk/client-kms";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager"; 
+
+
+const kmsSecret = process.env.KMS_SECRET;
+const ssmSecret = process.env.SSM_SECRET;
+
+let decodedSecret;
+let DecodedKMSSecret;
+
+const kms = new KMSClient({});
+const ssm =  new SSMClient({});
+const sm = new SecretsManagerClient({});
+
+export const handler = async message => {
+    console.log(message);
+    let secretType = message.pathParameters.id
+    console.log("Secret Type:", secretType);
+
+    if(secretType == 'kms')
+        decodedSecret = await decodeKMSSecret();
+    else if (secretType == 'ssm')
+        decodedSecret = await decodeSSMSecret();
+    else
+        decodedSecret = "Provide a valid secret type (kms, ssm, or sm (secrets manager))";
+
+    console.log(decodedSecret);
+    const response = {
+        statusCode: 200,
+        headers: {},
+        body: JSON.stringify('Plain text secret(s): ' + decodedSecret)
+    };
+    return response;
+};
+
+async function decodeKMSSecret() {
+    if (DecodedKMSSecret) {
+        return DecodedKMSSecret;
+    }
+    const params = {
+      CiphertextBlob: Buffer.from(kmsSecret, 'base64')
+    };
+    const data = await kms.send(new DecryptCommand(params));
+    DecodedKMSSecret = Buffer.from(data.Plaintext, 'base64').toString('utf-8');
+    return DecodedKMSSecret;
+}
+
+async function decodeSSMSecret() {
+    const params = {
+        Name: ssmSecret,
+        WithDecryption: true
+    };
+    const result = await ssm.send(new GetParameterCommand(params));
+    return result.Parameter.Value
+}
+```
+
+<img width="745" height="323" alt="image" src="https://github.com/user-attachments/assets/adfd1cc0-943b-4382-93e0-100923910cd2" />
+
+The Lambda function has been updated to read the Parameter Store and display the password.
+
+> [!NOTE]
+> There is an IAM permission, **ssm:GetParameter**, needed for the Lambda function to read Systems Manager. This permission has been added to the **LambdaDeploymentRole** in the pre-build process of the lab.
+
+<img width="713" height="83" alt="image" src="https://github.com/user-attachments/assets/9c8f95db-065f-480a-b955-04bc57c93092" />
+
+You should see the following text in the browser.
+```
+"Plain text secret(s): Hello, Parameter Store!"
+```
+
+## Task 3.3: Storing a secret using Secrets Manager
+
+Secrets Manager helps you meet your security and compliance requirements by enabling you to rotate secrets safely without the need for code deployments. You can store and retrieve secrets using the Secrets Manager console, AWS SDK, AWS CLI, or CloudFormation. To retrieve secrets, you simply replace plaintext secrets in your applications with code to pull in those secrets programmatically using the Secrets Manager APIs.
+
+<img width="463" height="33" alt="image" src="https://github.com/user-attachments/assets/bc349d45-6ff9-469c-a983-74e24dd192d3" />
+
+```bash
+aws secretsmanager create-secret --name dbUserId --secret-string  "secretsmanagerpassword"
+```
+This is similar to storing database credentials. Here the UserId is **dbUserId** with string of **secretsmanagerpassword**. The following output is displayed:
+
+```json
+{
+    "ARN": "arn:aws:secretsmanager:us-west-2:{AWS::AccountId}:secret:dbUserId-xxxxxx",
+    "Name": "dbUserId",
+    "VersionId": "xxxxx"
+}
+```
+
+#### View the secret in Secrets Manager from the AWS Management Console
+
+<img width="681" height="47" alt="image" src="https://github.com/user-attachments/assets/b0d41c11-7fe0-40b2-b43c-df769ba30b78" />
+
+The **dbUserId** secret you created earlier is displayed here.
+
+<img width="613" height="68" alt="image" src="https://github.com/user-attachments/assets/a125fc99-aaaf-4c24-8893-942db64bd67b" />
+
+#### Test the secret using a Lambda function
+The **sam-bookmark-app-secrets-function** function code should be updated to test the secret.
+
+<img width="677" height="93" alt="image" src="https://github.com/user-attachments/assets/03a40408-d343-4b75-8a34-e3f6009314e1" />
+
+* Add the following constant after the ssmsecret constant (line 8):
+```typescript
+const userId = process.env.SM_USER_ID;
+```
+
+* Add the following code to decode Secrets Manager secret at lines 25 to 28
+```typescript
+else if (secretType == 'sm') {
+        var password = await decodeSMSecret(userId);
+        decodedSecret = "Password is: " + password;
+    }
+```
+
+* Add the following code snippet to the end of the function code:
+
+```typescript
+async function decodeSMSecret(smkey) {
+    console.log("SM Key:", smkey);
+    const params = {
+        SecretId: smkey
+    };
+    const result = await sm.send(new GetSecretValueCommand(params));
+    return result.SecretString;
+}
+```
+
+The code should look like the following code after you add the two previous snippets:
+
+```typescript
+import { KMSClient, DecryptCommand } from "@aws-sdk/client-kms";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-secrets-manager"; 
+
+
+const kmsSecret = process.env.KMS_SECRET;
+const ssmSecret = process.env.SSM_SECRET;
+const userId = process.env.SM_USER_ID;
+
+let decodedSecret;
+let DecodedKMSSecret;
+
+const kms = new KMSClient({});
+const ssm = new SSMClient({});
+const sm = new SecretsManagerClient({});
+
+export const handler = async message => {
+    console.log(message);
+    let secretType = message.pathParameters.id
+    console.log("Secret Type:", secretType);
+
+    if(secretType == 'kms')
+        decodedSecret = await decodeKMSSecret();
+    else if (secretType == 'ssm')
+        decodedSecret = await decodeSSMSecret();
+    else if (secretType == 'sm') {
+        var password = await decodeSMSecret(userId);
+        decodedSecret = "Password is: " + password;
+    }
+    else
+        decodedSecret = "Provide a valid secret type (kms, ssm, or sm (secrets manager))";
+
+    console.log(decodedSecret);
+    const response = {
+        statusCode: 200,
+        headers: {},
+        body: JSON.stringify('Plain text secret(s): ' + decodedSecret)
+    };
+    return response;
+};
+
+async function decodeKMSSecret() {
+    if (DecodedKMSSecret) {
+        return DecodedKMSSecret;
+    }
+    const params = {
+      CiphertextBlob: Buffer.from(kmsSecret, 'base64')
+    };
+    const data = await kms.send(new DecryptCommand(params));
+    DecodedKMSSecret = Buffer.from(data.Plaintext, 'base64').toString('utf-8');
+    return DecodedKMSSecret;
+}
+
+async function decodeSSMSecret() {
+    const params = {
+        Name: ssmSecret,
+        WithDecryption: true
+    };
+    const result = await ssm.send(new GetParameterCommand(params));
+    return result.Parameter.Value
+}
+
+async function decodeSMSecret(smkey) {
+    console.log("SM Key:", smkey);
+    const params = {
+        SecretId: smkey
+    };
+    const result = await sm.send(new GetSecretValueCommand(params));
+    return result.SecretString;
+}
+```
+
+<img width="745" height="311" alt="image" src="https://github.com/user-attachments/assets/16a0d38a-52f2-4b7c-a405-4b3ea143ebd6" />
+
+The Lambda function has been updated to read Secrets Manager and display the password.
+
+> [!NOTE]
+> There is an IAM permission, **secretsmanager:GetSecretValue**, needed for the Lambda function to read Secrets Manager. This permission has been added to the **SamDeploymentRole** in the pre-build process of the lab.
+
+<img width="691" height="82" alt="image" src="https://github.com/user-attachments/assets/bb81a598-e525-4814-a475-35e673eccf2a" />
+
+```
+"Plain text secret(s): Password is: secretsmanagerpassword"
+```
+
+### Conclusion
+
+You have successfully:
+* Secured your application with AWS WAF web ACLs
+* Secured access to your API with an API Gateway resource policy
+* Secured your Lambda functions and other backend services with AWS KMS, Systems Manager Parameter Store, and Secrets Manager
+
+Additional resources
+For more information on AWS WAF, see [Using AWS WAF to control access](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-awswaf.html).
+For more information on Secrets Manager, see [AWS Secrets Manager user guide](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html).
+For more information on AWS KMS, see [AWS KMS Features](https://aws.amazon.com/kms/features/).
+For more information on Systems Manager, see [Sharing secrets with AWS Lambda using AWS Systems Manager](https://aws.amazon.com/blogs/compute/sharing-secrets-with-aws-lambda-using-aws-systems-manager-parameter-store/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
